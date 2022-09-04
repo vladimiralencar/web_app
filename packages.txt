@@ -1,5 +1,0 @@
-mysql-connector-python
-pymysql
-sqlalchemy
-pandas 
-numpy
