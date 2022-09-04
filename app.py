@@ -15,7 +15,7 @@ import streamlit as st
 from sqlalchemy import create_engine
 #import mysql.connector
 
-from mysql.connector import errorcode
+#from mysql.connector import errorcode
 
 
 user = 'root'
@@ -55,15 +55,21 @@ def conecta_banco_de_dados():
         # Abrir a Conexão
         engine = create_engine(conexao, echo = False, pool_recycle=porta)
         return conexao, engine
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            erro = "Something is wrong with your user name or password"
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            erro = "Database does not exist"
-        else:
-            erro = err
-            st.write(erro)
+    except:
+        erro = 'erro de conexao'
+        st.write(erro)
         return False, False
+
+    # except mysql.connector.Error as err:
+    #     if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+    #         erro = "Something is wrong with your user name or password"
+    #     elif err.errno == errorcode.ER_BAD_DB_ERROR:
+    #         erro = "Database does not exist"
+    #     else:
+    #         erro = err
+    #         st.write(erro)
+    #     return False, False
+
 
 def consulta_banco_de_dados(cnx, tabela):
         st.write('Tabela')
