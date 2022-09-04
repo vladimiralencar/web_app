@@ -12,8 +12,12 @@ import pandas as pd
 import numpy as np
 
 import streamlit as st
-import mysql.connector
+from sqlalchemy import create_engine
+#import mysql.connector
+
 from mysql.connector import errorcode
+
+
 user = 'root'
 database = 'aulas'
 
@@ -44,8 +48,7 @@ porta = 3600
 schema = database
 
 def conecta_banco_de_dados():
-    import mysql.connector
-    from sqlalchemy import create_engine
+
     erro = False
     try:
         conexao = "mysql+pymysql://" + user + ":" + password + "@" + host + '/' + schema
@@ -84,7 +87,7 @@ if consultar_tabela:
         conexao.close()
 
 
-import chardet
+#import chardet
 
 st.write("Importar Tabela para Mysql")
 
@@ -107,7 +110,7 @@ if file is not None:
     conexao, engine = conecta_banco_de_dados()
 
     if conexao != False: 
-        st.write('conectou')
+        #st.write('conectou')
 
         # importacao
 
