@@ -37,14 +37,24 @@ def conecta_banco_de_dados():
         st.write(erro)
         return False, False
 
-def consulta_banco_de_dados(cnx, tabela):
+def consulta_banco_de_dados(cnx, engine, tabela):
     try:
         if cnx is not None and tabela is not None:
             query = "SELECT * from " + tabela +  " limit 100;"
-            result_dataFrame = pd.read_sql(query,cnx)
-            st.write(result_dataFrame)
+            #result_dataFrame = pd.read_sql(query,cnx)
+            #st.write(result_dataFrame)
+
+
+            # connect to the database using the newly created Engine instance
+            connection = engine.connect()
+            # run SQL query
+            df = pd.read_sql_query(sql=query, con=connection)
+            st.write(df)
     except:
         erro = 'erro de conexao'
+
+
+
 
 
 # principal
@@ -69,7 +79,7 @@ with tab2:
     if tabela is not None:
         conexao, engine  = conecta_banco_de_dados()
         if conexao != False: 
-            consulta_banco_de_dados(conexao, tabela)
+            consulta_banco_de_dados(conexao, engine, tabela)
 
 with tab3:
     st.header("Importar Tabela para MYSQL")
@@ -111,8 +121,26 @@ with tab4:
     conexao, engine  = conecta_banco_de_dados()
     if conexao is not None and tabela3 is not None:
         query = "SELECT * from " + tabela3 +  " ;"
-        df = pd.read_sql(query,conexao)
+        #df = pd.read_sql(query,conexao)
+        my_connection = engine.connect()
+        df = pd.read_sql_query(sql=query, con=my_connection)
         st.write(df)
         df.to_csv(tabela + '.csv', index=False)
         st.write('tabela ' + tabela3 + '.csv' + ' Exportada.')
 
+
+def consulta_banco_de_dados2(cnx, tabela):
+    try:
+        if cnx is not None and tabela is not None:
+            query = "SELECT * from " + tabela +  " limit 100;"
+            result_dataFrame = pd.read_sql(query,cnx)
+            st.write(result_dataFrame)
+
+
+            # connect to the database using the newly created Engine instance
+            my_connection = my_engine.connect()
+
+            # run SQL query
+            my_df = pd.read_sql_query(sql=my_sql_query, con=my_connection)
+    except:
+        erro = 'erro de conexao'
