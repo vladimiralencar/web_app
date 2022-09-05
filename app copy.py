@@ -4,14 +4,24 @@
 #pip install -q pymysql
 #pip install -q sqlalchemy
 
+
 import pandas as pd
 import numpy as np
+
 import streamlit as st
 from sqlalchemy import create_engine
+#import mysql.connector
+#from mysql.connector import errorcode
 
 st.title('Mysql Tools - Importar/Exportar')
 
+# carregar_csv = st.sidebar.button("Carregar .csv")
+# consultar_tabela = st.sidebar.button("Consultar Tabela Mysql")
+# importar_tabela = st.sidebar.button("Importar Tabela para Mysql")
+# exportar_csv = st.sidebar.button("Exportar Tabela do Mysql para .csv")
+
 st.text_input("Database:", key="database", value="aulas")
+
 st.text_input("user:", key="user", value='root')
 st.text_input("Password:", key="password", value='rootroot')
 st.text_input("Encoding:", key="encoding", value='latin-1')
@@ -23,9 +33,9 @@ host = "127.0.0.1" # localhost
 porta = 3600
 schema = database
 encoding = st.session_state.encoding
-tabela = None
 
 def conecta_banco_de_dados():
+
     erro = False
     try:
         conexao = "mysql+pymysql://" + user + ":" + password + "@" + host + '/' + schema
@@ -37,23 +47,21 @@ def conecta_banco_de_dados():
         st.write(erro)
         return False, False
 
+
 def consulta_banco_de_dados(cnx, tabela):
-    try:
-        if cnx is not None and tabela is not None:
-            query = "SELECT * from " + tabela +  " limit 100;"
-            result_dataFrame = pd.read_sql(query,cnx)
-            st.write(result_dataFrame)
-    except:
-        erro = 'erro de conexao'
+        st.write('Tabela')
+        query = "SELECT * from " + tabela +  " limit 100;"
+        result_dataFrame = pd.read_sql(query,cnx)
+        st.write('Tabela')
+        st.write(result_dataFrame)
 
 # principal
 
 tab1, tab2, tab3, tab4 = st.tabs(["Visualizar CSV", "Consultar Tabela no MySQL", 
-                            "Importar Tabela para MYSQL", "Exportar Tabela do Mysql para .CSV"])
+                            "Importar Tabela para MYSQL", ("Exportar Tabela do Mysql para .CSV")])
 
 with tab1:
-    st.header('Visualizar CSV')
-    upload_file_csv = None
+    st.write('Arquivo csv')
     uploaded_file = st.file_uploader("Escolha um arquivo (*.csv)", key="upload_file_csv")
     file = st.session_state.upload_file_csv
     if file is not None:
@@ -61,7 +69,6 @@ with tab1:
         st.write(df)
 
 with tab2:
-    tabela = None
     st.header("Consultar Tabela no MySQL")
     st.text_input("tabela:", key="tabela")
     tabela = st.session_state.tabela
@@ -73,10 +80,8 @@ with tab2:
 
 
 with tab3:
-    st.header("Importar Tabela para MYSQL")
-    tabela = None
-    st.text_input("tabela:", key="tabela2")
-    tabela = st.session_state.tabela2
+    st.write("Importar Tabela para MYSQL")
+
 
     # uploaded_file = st.file_uploader("Escolha um arquivo (*.csv)")
     uploaded_file = None
@@ -92,27 +97,92 @@ with tab3:
     if file is not None:
         df = pd.read_csv(file, encoding='latin-1') #, encoding='latin-1') #, encoding=result['encoding'])
         st.write(df)
-        #st.write("Importar Tabela para o  Mysql")
+        st.write("Importar Tabela para o  Mysql")
         conexao, engine = conecta_banco_de_dados()
 
-        if tabela is not None:
-            if conexao != False: 
-                # dataframe => como tabela no MySQL
-                df.to_sql(name = tabela, con = engine, if_exists = 'append', index = False)
-                st.write('importado no MySQL.')
-                #st.write(df)
-        else: 
-            st.write('digite o nome da tabela')
+        if conexao != False: 
+            #st.write('conectou')
+
+            # importacao
+
+
+            # host = "127.0.0.1" # localhost
+            # porta = 3600
+            # schema = database
+            # conexao = "mysql+pymysql://" + user + ":" + password + "@" + host + '/' + schema
+
+            # # Abrir a Conexão
+            # engine = create_engine(conexao, echo = False, pool_recycle=porta)
+
+            # dataframe => como tabela no MySQL
+            df.to_sql(name = tabela, con = engine, if_exists = 'append', index = False)
+            st.write('importado.')
+            st.write(df)
+            conexao.close()
 
 
 with tab4:
-    st.header("Exportar Tabela do Mysql para .CSV")
+    st.header("Mysql => CSV")
     st.image("https://static.streamlit.io/examples/owl.jpg", width=200)
 
+# if carregar_csv:
+#     st.write('tabela csv')
+#     uploaded_file = st.file_uploader("Escolha um arquivo (*.csv)", key="upload_file_csv")
+#     file = st.session_state.upload_file_csv
+#     if file is not None:
+#         df = pd.read_csv(file, encoding=encoding) #, encoding='latin-1') #, encoding=result['encoding'])
+#         st.write(df)
+
+# if consultar_tabela:
+#     conexao, engine  = conecta_banco_de_dados()
+#     if conexao != False: 
+#         consulta_banco_de_dados(conexao, tabela)
+#         conexao.close()
 
 
+#import chardet
+
+st.write("Importar Tabela para Mysql")
 
 
+# uploaded_file = st.file_uploader("Escolha um arquivo (*.csv)")
+uploaded_file = None
+file = None 
+
+uploaded_file = st.file_uploader("Escolha um arquivo (*.csv)", key="upload_file")
+file = st.session_state.upload_file
+# if importar_tabela:
+#     uploaded_file = st.file_uploader("Escolha um arquivo (*.csv)", key="upload_file")
+#     file = st.session_state.upload_file
+
+conexao, engine = False, False
+if file is not None:
+    df = pd.read_csv(file, encoding='latin-1') #, encoding='latin-1') #, encoding=result['encoding'])
+    st.write(df)
+    st.write("Importar Tabela para o  Mysql")
+    conexao, engine = conecta_banco_de_dados()
+
+    if conexao != False: 
+        #st.write('conectou')
+
+        # importacao
+
+
+        # host = "127.0.0.1" # localhost
+        # porta = 3600
+        # schema = database
+        # conexao = "mysql+pymysql://" + user + ":" + password + "@" + host + '/' + schema
+
+        # # Abrir a Conexão
+        # engine = create_engine(conexao, echo = False, pool_recycle=porta)
+
+        # dataframe => como tabela no MySQL
+
+        
+        df.to_sql(name = tabela, con = engine, if_exists = 'append', index = False)
+        st.write('importado.')
+        st.write(df)
+        conexao.close()
 
 
         # df = pd.read_csv(uploaded_file, encoding='latin-1') #, encoding='latin-1') #, encoding=result['encoding'])
