@@ -9,7 +9,8 @@
 import pandas as pd
 import numpy as np
 import streamlit as st
-from sqlalchemy import create_engine
+import sqlalchemy
+#from sqlalchemy import create_engine
 import pymysql
 
 st.title('Mysql Tools - Importar/Exportar')
@@ -33,7 +34,7 @@ def conecta_banco_de_dados():
     try:
         conexao = "mysql+pymysql://" + user + ":" + password + "@" + host + '/' + schema
  
-        engine =  create_engine(
+        engine =  sqlalchemy.create_engine(
                     url="mysql+pymysql://{0}:{1}@{2}:{3}/{4}".format(
                     user, password, host, port, database
                 )
@@ -129,5 +130,5 @@ with tab4:
             st.write('tabela ' + tabela + '.csv' + ' Exportada.')
             engine.close()
         except:
-            print('erro de conexao')
+            print('erro de conexao tab 4')
 
