@@ -51,6 +51,7 @@ def consulta_banco_de_dados(cnx, engine, tabela):
             # run SQL query
             df = pd.read_sql_query(sql=query, con=connection)
             st.write(df)
+            engine.close()
     except:
         erro = 'erro de conexao'
 
@@ -123,6 +124,7 @@ with tab4:
             st.write(df)
             df.to_csv(tabela + '.csv', index=False)
             st.write('tabela ' + tabela + '.csv' + ' Exportada.')
+            engine.close()
         except:
             print('erro de conexao')
 
