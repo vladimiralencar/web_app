@@ -43,8 +43,10 @@ def consulta_banco_de_dados(cnx, tabela):
             query = "SELECT * from " + tabela +  " limit 100;"
             result_dataFrame = pd.read_sql(query,cnx)
             st.write(result_dataFrame)
+            return result_dataframe
     except:
         erro = 'erro de conexao'
+
 
 
 # principal
@@ -62,14 +64,16 @@ with tab1:
         st.write(df)
 
 with tab2:
-    st.header("Consultar Tabela no MySQL")
     tabela = None
+    st.header("Consultar Tabela no MySQL")
     st.text_input("tabela:", key="tabela")
     tabela = st.session_state.tabela
     if tabela is not None:
         conexao, engine  = conecta_banco_de_dados()
         if conexao != False: 
             consulta_banco_de_dados(conexao, tabela)
+            #conexao.close()
+
 
 with tab3:
     st.header("Importar Tabela para MYSQL")
@@ -83,6 +87,9 @@ with tab3:
 
     uploaded_file = st.file_uploader("Escolha um arquivo (*.csv)", key="upload_file")
     file = st.session_state.upload_file
+    # if importar_tabela:
+    #     uploaded_file = st.file_uploader("Escolha um arquivo (*.csv)", key="upload_file")
+    #     file = st.session_state.upload_file
 
     conexao, engine = False, False
     if file is not None:
@@ -100,19 +107,18 @@ with tab3:
         else: 
             st.write('digite o nome da tabela')
 
+
 with tab4:
     st.header("Exportar Tabela do Mysql para .CSV")
-    tabela3 = None
+    tabela = None
     st.text_input("tabela:", key="tabela3")
+    tabela = st.session_state.tabela3
 
-    tabela3 = st.session_state.tabela3
-
-    st.write(tabela3)
     conexao, engine  = conecta_banco_de_dados()
-    if conexao is not None and tabela3 is not None:
-        query = "SELECT * from " + tabela3 +  " ;"
+    if conexao is not None and tabela is not None:
+        query = "SELECT * from " + tabela +  " ;"
         df = pd.read_sql(query,conexao)
         st.write(df)
         df.to_csv(tabela + '.csv', index=False)
-        st.write('tabela ' + tabela3 + '.csv' + ' Exportada.')
+        st.write('tabela ' + tabela + '.csv' + ' Exportada.')
 
