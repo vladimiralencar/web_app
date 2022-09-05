@@ -19,8 +19,8 @@ st.text_input("Encoding:", key="encoding", value='latin-1')
 database = st.session_state.database
 user = st.session_state.user
 password = st.session_state.password
-host = "127.0.0.1" # localhost
-porta = 3600
+host = '127.0.0.1' # localhost
+port = 3306
 schema = database
 encoding = st.session_state.encoding
 tabela = None
@@ -30,7 +30,17 @@ def conecta_banco_de_dados():
     try:
         conexao = "mysql+pymysql://" + user + ":" + password + "@" + host + '/' + schema
         # Abrir a Conexão
-        engine = create_engine(conexao, echo = False, pool_recycle=porta)
+
+        # create SQLAlchemy Engine object instance 
+        #engine = sqlalchemy.create_engine(f"{dialect}+{driver}://{login}:{password}@{host}/{database}")
+
+        engine =  create_engine(
+                    url="mysql+pymysql://{0}:{1}@{2}:{3}/{4}".format(
+                    user, password, host, port, database
+                )
+        )
+
+        #engine = create_engine(conexao, echo = False, pool_recycle=porta)
         return conexao, engine
     except:
         erro = 'erro de conexao'
