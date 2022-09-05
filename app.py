@@ -19,7 +19,7 @@ st.text_input("Encoding:", key="encoding", value='latin-1')
 database = st.session_state.database
 user = st.session_state.user
 password = st.session_state.password
-host = '127.0.0.1' # localhost
+host = "127.0.0.1" # localhost
 port = 3306
 schema = database
 encoding = st.session_state.encoding
