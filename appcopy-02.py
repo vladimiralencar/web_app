@@ -29,7 +29,11 @@ def conecta_banco_de_dados():
     erro = False
     try:
         conexao = "mysql+pymysql://" + user + ":" + password + "@" + host + '/' + schema
- 
+        # Abrir a Conexão
+
+        # create SQLAlchemy Engine object instance 
+        #engine = sqlalchemy.create_engine(f"{dialect}+{driver}://{login}:{password}@{host}/{database}")
+
         engine =  create_engine(
                     url="mysql+pymysql://{0}:{1}@{2}:{3}/{4}".format(
                     user, password, host, port, database
@@ -47,6 +51,10 @@ def consulta_banco_de_dados(cnx, engine, tabela):
     try:
         if cnx is not None and tabela is not None:
             query = "SELECT * from " + tabela +  " limit 100;"
+            #result_dataFrame = pd.read_sql(query,cnx)
+            #st.write(result_dataFrame)
+
+            # connect to the database using the newly created Engine instance
             connection = engine.connect()
             # run SQL query
             df = pd.read_sql_query(sql=query, con=connection)
@@ -80,10 +88,11 @@ with tab2:
 
 with tab3:
     st.header("Importar Tabela para MYSQL")
-    tabela2 = None
+    tabela = None
     st.text_input("tabela:", key="tabela2")
     tabela = st.session_state.tabela2
 
+    # uploaded_file = st.file_uploader("Escolha um arquivo (*.csv)")
     uploaded_file = None
     file = None 
 
@@ -92,8 +101,9 @@ with tab3:
 
     conexao, engine = False, False
     if file is not None:
-        df = pd.read_csv(file, encoding='latin-1') 
+        df = pd.read_csv(file, encoding='latin-1') #, encoding='latin-1') #, encoding=result['encoding'])
         st.write(df)
+        #st.write("Importar Tabela para o  Mysql")
         conexao, engine = conecta_banco_de_dados()
 
         if tabela is not None:
@@ -106,23 +116,36 @@ with tab3:
             st.write('digite o nome da tabela')
 
 with tab4:
-    tabela = None
     st.header("Exportar Tabela do Mysql para .CSV")
     tabela3 = None
     st.text_input("tabela:", key="tabela3")
-    tabela = st.session_state.tabela3
 
-    st.write(tabela)
+    tabela3 = st.session_state.tabela3
+
+    st.write(tabela3)
     conexao, engine  = conecta_banco_de_dados()
-    if conexao is not None and tabela is not None:
-        query = "SELECT * from " + tabela +  " ;"
+    if conexao is not None and tabela3 is not None:
+        query = "SELECT * from " + tabela3 +  " ;"
         #df = pd.read_sql(query,conexao)
-        try:
-            connection = engine.connect()
-            df = pd.read_sql_query(sql=query, con=connection)
-            st.write(df)
-            df.to_csv(tabela + '.csv', index=False)
-            st.write('tabela ' + tabela + '.csv' + ' Exportada.')
-        except:
-            print('erro de conexao')
+        connection = engine.connect()
+        df = pd.read_sql_query(sql=query, con=connection)
+        st.write(df)
+        df.to_csv(tabela3 + '.csv', index=False)
+        st.write('tabela ' + tabela3 + '.csv' + ' Exportada.')
 
+
+def consulta_banco_de_dados2(cnx, tabela):
+    try:
+        if cnx is not None and tabela is not None:
+            query = "SELECT * from " + tabela +  " limit 100;"
+            result_dataFrame = pd.read_sql(query,cnx)
+            st.write(result_dataFrame)
+
+
+            # connect to the database using the newly created Engine instance
+            my_connection = my_engine.connect()
+
+            # run SQL query
+            my_df = pd.read_sql_query(sql=my_sql_query, con=my_connection)
+    except:
+        erro = 'erro de conexao'
