@@ -4,10 +4,13 @@
 #pip install -q pymysql
 #pip install -q sqlalchemy
 
+# pipreqs --force
+
 import pandas as pd
 import numpy as np
 import streamlit as st
 from sqlalchemy import create_engine
+import pymysql
 
 st.title('Mysql Tools - Importar/Exportar')
 
@@ -39,7 +42,7 @@ def conecta_banco_de_dados():
         #engine = create_engine(conexao, echo = False, pool_recycle=porta)
         return conexao, engine
     except:
-        erro = 'erro de conexao'
+        erro = 'erro de conexao - conecta banco de dados'
         st.write(erro)
         return False, False
 
