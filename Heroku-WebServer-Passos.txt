@@ -1,0 +1,85 @@
+Deploy no Heroku web server - passos
+
+
+Passo no terminal:
+
+=== Heroku Deploy update
+
+Deploy no Heroku web server - passos
+
+
+git add .
+git commit -m "2022-v1.1.1"
+git push -f heroku master  
+heroku ps:scale web=1
+
+==
+
+Procfile
+web: python app.py
+
+Passo no terminal:
+
+git init
+git add .
+git commit -m atualizando"
+
+heroku login
+heroku git:remote -a mysqltoolsapp
+git push heroku master
+heroku ps:scale web=1
+
+heroku login
+heroku git:remote -a detecta-lesoes-de-pele
+git push heroku master
+heroku ps:scale web=1
+
+==
+
+#heroku git:remote -a sisdpele
+
+git init
+git add .
+git commit -m "2022-v1.1.0"
+git push -f heroku master  
+heroku ps:scale web=1
+
+==
+Flask==1.1.1
+tensorflow_cpu==2.5.0
+werkzeug==0.16.0
+pandas==1.0.3
+numpy==1.18.0
+Pillow==7.1.2
+
+
+
+
+keras
+tensorflow_core.estimator==2.6.0
+tensorflow===2.3.0
+tensorflow_base==2.3.0
+
+
+======= Heroku Deploy Create
+
+git init
+git add .
+git commit -m "criando a aplicacao"
+
+heroku login
+heroku create detecta_lesoes_de_pele
+heroku apps:create detecta-lesoes-de-pele
+
+heroku git:remote -a detecta-lesoes-de-pele
+git push heroku master
+heroku ps:scale web=1
+
+
+==
+
+FLASK_APP=app.py flask run
+
+export FLASK_APP=app.py
+python -m flask run
+

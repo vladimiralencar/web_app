@@ -16,6 +16,7 @@ import pymysql
 st.title('Mysql Tools - Importar/Exportar')
 
 st.text_input("Database:", key="database", value="aulas")
+st.text_input("Host:", key="host", value='127.0.0.1')
 st.text_input("user:", key="user", value='root')
 st.text_input("Password:", key="password", value='rootroot')
 st.text_input("Encoding:", key="encoding", value='latin-1')
@@ -23,7 +24,7 @@ st.text_input("Encoding:", key="encoding", value='latin-1')
 database = st.session_state.database
 user = st.session_state.user
 password = st.session_state.password
-host = "127.0.0.1" # localhost
+host = st.session_state.host # "127.0.0.1" # localhost
 port = 3306
 schema = database
 encoding = st.session_state.encoding
@@ -86,8 +87,11 @@ with tab2:
 with tab3:
     st.header("Importar Tabela para MYSQL")
     tabela2 = None
-    st.text_input("tabela:", key="tabela2")
+    st.text_input("tabela MySQL:", key="tabela2")
+    
+
     tabela = st.session_state.tabela2
+
 
     uploaded_file = None
     file = None 
@@ -117,18 +121,29 @@ with tab4:
     st.text_input("tabela:", key="tabela3")
     tabela = st.session_state.tabela3
 
+    arquivo_destino = None
+    st.text_input("Nome do arquivo destino:", key="arquivo", 
+        value='/home/valencar/Documents/arquivo.csv')
+    arquivo_destino = st.session_state.arquivo    
+
+
     st.write(tabela)
     conexao, engine  = conecta_banco_de_dados()
-    if conexao is not None and tabela is not None:
+    if conexao is not None and tabela is not None \
+                and arquivo_destino is not None:
         query = "SELECT * from " + tabela +  " ;"
         #df = pd.read_sql(query,conexao)
         try:
+            df.write('exportando...')
             connection = engine.connect()
             df = pd.read_sql_query(sql=query, con=connection)
             st.write(df)
-            df.to_csv(tabela + '.csv', index=False)
-            st.write('tabela ' + tabela + '.csv' + ' Exportada.')
+            df.to_csv(arquivo_destino, index=False)
+            st.write('tabela ' + arquivo_destino + '.csv' + ' Exportada.')
             engine.close()
+            df.write('Arquivo exportado...')
         except:
             print('erro de conexao tab 4')
+    else: 
+        st.write('none')
 
