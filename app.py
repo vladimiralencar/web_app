@@ -134,16 +134,16 @@ with tab4:
         query = "SELECT * from " + tabela +  " ;"
         #df = pd.read_sql(query,conexao)
         try:
-            df.write('exportando...')
+            st.write('exportando...')
             connection = engine.connect()
             df = pd.read_sql_query(sql=query, con=connection)
             st.write(df)
             df.to_csv(arquivo_destino, index=False)
             st.write('tabela ' + arquivo_destino + '.csv' + ' Exportada.')
             engine.close()
-            df.write('Arquivo exportado...')
+            st.write('Arquivo exportado...')
         except:
-            print('erro de conexao tab 4')
+            st.write('erro de conexao tab 4')
     else: 
         st.write('none') 
 

@@ -27,6 +27,7 @@ git commit -m atualizando"
 heroku login
 heroku git:remote -a mysqltoolsapp
 git push heroku master
+git push heroku main
 heroku ps:scale web=1
 
 heroku login
