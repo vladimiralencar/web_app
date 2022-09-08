@@ -28,7 +28,7 @@ host = st.session_state.host # "127.0.0.1" # localhost
 port = 3306
 schema = database
 encoding = st.session_state.encoding
-tabela = None
+tabela = None 
 
 def conecta_banco_de_dados():
     erro = False
@@ -145,5 +145,5 @@ with tab4:
         except:
             print('erro de conexao tab 4')
     else: 
-        st.write('none')
+        st.write('none') 
 
