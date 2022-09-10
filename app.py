@@ -50,10 +50,10 @@ def init_connection():
 
     return mydb
 
-def run_query(conn, query):
-    with conn.cursor() as cur:
-        cur.execute(query)
-        return cur.fetchall()
+# def run_query(conn, query):
+#     with conn.cursor() as cur:
+#         cur.execute(query)
+#         return cur.fetchall()
 
 # def conecta_banco_de_dados():
 #     erro = False
@@ -101,17 +101,18 @@ with tab1:
 
 with tab2:
     st.header("Consultar Tabela no MySQL")
-
-    st.text_input("tabela:", key="tabela")
+    tabela = mycursor = None
+    st.text_input("tabela:", key="tabela", value=None)
     tabela = st.session_state.tabela
     if tabela is not None:
+        mycursor = init_connection().cursor()
+        if mycursor is not None:
+            mycursor.execute("SELECT * FROM " + tabela + " limit 10")
+            myresult = mycursor.fetchall()
+            for x in myresult:
+                st.write(x)
 
-        mycursor = init_connection()
-        mycursor.execute("SELECT * FROM " + tabela + ' limit 10')
-        myresult = mycursor.fetchall()
 
-        for x in myresult:
-            print(x)
     # tabela = None
     # st.text_input("tabela:", key="tabela")
     # tabela = st.session_state.tabela
