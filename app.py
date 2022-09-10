@@ -36,11 +36,18 @@ import mysql.connector
 @st.experimental_singleton
 def init_connection():
     mydb = mysql.connector.connect(
-    host=host,
-    user=user,
-    password=password, 
-    database=database
+    host='127.0.0.1',
+    user='root',
+    password='rootroot', 
+    database='aulas'
     )
+    # mydb = mysql.connector.connect(
+    # host=host,
+    # user=user,
+    # password=password, 
+    # database=database
+    # )
+
     return mydb
 
 def run_query(conn, query):
