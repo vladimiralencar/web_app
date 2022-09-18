@@ -118,14 +118,16 @@ def previsao_diabetes(Pressao_Alta, Colesterol_Alto, Checagem_Colesterol_em_5_an
 
 
     # Executa no computador local
-    url_local = 'modelo_rf.pkl'
+    url_local = ''
 
     # Executa na nuvem
-    url_nuvem = 'diabetes/modelo_rf.pkl'
+    url_nuvem = 'diabetes/' 
+
+    arquivo = 'modelo_rf.pkl'
 
     url = url_local
 
-    rf = pickle.load(open(url, 'rb')) 
+    rf = pickle.load(open(url + arquivo, 'rb')) 
 
     preds = rf.predict(new_X.reshape(1, -1) )[0]
     #preds
@@ -162,7 +164,7 @@ if predict_button:
     
 
     #st.write(Diagnostico_Diabetes)
-    image = Image.open('diabetes/' + imagem)
+    image = Image.open(url + imagem)
     st.markdown('## Diagnóstico: ' + '__' + Diagnostico_Diabetes + '__')
     #st.write('Diagnóstico:' + Diagnostico_Diabetes)
     st.image(image, width=250)
