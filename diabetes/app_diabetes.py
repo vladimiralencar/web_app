@@ -1,4 +1,4 @@
-import pickle as cPickle
+import pickle 
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -120,9 +120,10 @@ def previsao_diabetes(Pressao_Alta, Colesterol_Alto, Checagem_Colesterol_em_5_an
     #file = "modelo_rf.pkl" 
     #xgb = joblib.load(file)
 
+    rf = pickle.load(open('modelo_rf.pkl', 'rb')) 
 
-    with open('modelo_rf.pkl', 'rb') as f:
-        rf = cPickle.load(f)
+    # with open('modelo_rf.pkl', 'rb') as f:
+    #     rf = cPickle.load(f)
 
     preds = rf.predict(new_X.reshape(1, -1) )[0]
     #preds
