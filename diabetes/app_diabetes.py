@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from PIL import Image
 
+# pipreqs
 
 st.title('Sistema para Previsão de Diabetes')
 st.sidebar.title("Atributos")
