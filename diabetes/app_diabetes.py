@@ -114,7 +114,7 @@ def previsao_diabetes(Pressao_Alta, Colesterol_Alto, Checagem_Colesterol_em_5_an
                       Saude_mental, Saude_fisica, Dificuldade_andar_ou_subir_escadas, Sexo, 
                       Idade, Nivel_Educacional, Renda])
 
-    file = 'modelo_XGB'
+    file = "modelo_XGB" 
     xgb = joblib.load(file)
     preds = xgb.predict(new_X.reshape(1, -1) )[0]
     #preds
