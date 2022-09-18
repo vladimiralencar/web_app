@@ -3,6 +3,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from PIL import Image
+import sklearn 
 
 # git lfs migrate import --include="*.pck"
 
