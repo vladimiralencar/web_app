@@ -1,22 +1,11 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
+import joblib
+from PIL import Image
 
-# st.text_input("Your name", key="name")
-
-# # You can access the value at any point with:
-# st.session_state.name
 
 st.title('Sistema para Previsão de Diabetes')
-
-
-#left_column, right_column = st.columns(2)
-# You can use a column just like st.sidebar:
-
-#url = 'heart_2020_disease.csv'
-#df = pd.read_csv(url)
-
-
-#atributos = list(df.columns)
 st.sidebar.title("Atributos")
 
 # # variaveis 
@@ -25,24 +14,12 @@ atributos = ['Diagnostico_Diabetes', 'Pressao_Alta', 'Colesterol_Alto', 'Checage
  # inicializacao das variaveis
 Diagnostico_Diabetes= Pressao_Alta= Colesterol_Alto= Checagem_Colesterol_em_5_anos= IMC= Fumante= AVC= Doenca_coronaria_cardiaca= Atividade_Fisica_nos_ultimos_30_dias= Consumo_Frutas= Consumo_Vegetais= Alto_Consumo_Alcool= Plano_de_Saude= Nao_pode_ir_ao_medico_devido_custo= Estado_Geral_Saude= Saude_mental= Saude_fisica= Dificuldade_andar_ou_subir_escadas= Sexo= Idade= Nivel_Educacional= Renda =  0 
 
-with st.sidebar: # scrolling=True
-# Or even better, call Streamlit functions inside a "with" block:
-    #with left_column:
-        # chosen = st.radio(
-        #     'Sorting hat',
-        #     ("Gryffindor", "Ravenclaw", "Hufflepuff", "Slytherin"))
-        # st.write(f"You are in {chosen} house!")
+with st.sidebar:
 
     with st.form(key='my_form'):
-    #text_input = st.text_input(label='Enter your name')
-
 
         def format_func(option):
             return CHOICES[option]
-
-
-        #option = st.selectbox("Select option", options=list(CHOICES.keys()), format_func=format_func)
-        #st.write(f"You selected option {option} called {format_func(option)}")
     
 
         CHOICES = {0: "Não", 2: "Sim"}
@@ -101,9 +78,7 @@ with st.sidebar: # scrolling=True
                     8: "55-59", 9: "60-64", 10: "65-69", 11: "70-74", 12: "75-79", 13:"80+"}
         Idade  = st.selectbox('Idade', options=list(CHOICES.keys()), format_func=format_func)
 
-
-  #1 = Never attended school or only kindergarten 2 = Grades 1 through 8 (Elementary) 3 = Grades 9 through 11 (Some high school) 4 = Grade 12 or GED (High school graduate) 5 = College 1 year to 3 years (Some college or technical school) 6 = College 4 years or more (College graduate)
-
+        #1 = Never attended school or only kindergarten 2 = Grades 1 through 8 (Elementary) 3 = Grades 9 through 11 (Some high school) 4 = Grade 12 or GED (High school graduate) 5 = College 1 year to 3 years (Some college or technical school) 6 = College 4 years or more (College graduate)
         CHOICES = {1: 'Não frequentou a escola', 2: 'Ensino Básico', 3: 'Ensino Médio Incompleto', 
                    4: 'Ensino Médio Completo', 4: "Faculdade (1 a 3 anos) ou Técnico", 
                    5: "Superior Completo" }
@@ -118,18 +93,11 @@ with st.sidebar: # scrolling=True
         Renda = st.selectbox('Renda Anual (em Dólar)',
             options=list(CHOICES.keys()), format_func=format_func)
 
-        #left_column.button('Press me!')
         predict_button = st.form_submit_button(label='Prever')
-
-        #submitted = st.form_submit_button("Submit")
 
 
 # Pagina pricipal
 
-
-
-import numpy as np
-#import pickle as cPickle
 def previsao_diabetes(Pressao_Alta, Colesterol_Alto, Checagem_Colesterol_em_5_anos, IMC, Fumante, AVC, 
                       Doenca_coronaria_cardiaca, Atividade_Fisica_nos_ultimos_30_dias, 
                       Consumo_Frutas, Consumo_Vegetais, Alto_Consumo_Alcool, 
@@ -138,9 +106,6 @@ def previsao_diabetes(Pressao_Alta, Colesterol_Alto, Checagem_Colesterol_em_5_an
                       Idade, Nivel_Educacional, Renda):
         # 0 = no diabetes 1 = prediabetes 2 = diabetes
 
-    # with open('modelo.pck', 'rb') as f:
-    #     rf = cPickle.load(f)
-
     new_X = np.array([Pressao_Alta, Colesterol_Alto, Checagem_Colesterol_em_5_anos, IMC, Fumante, AVC, 
                       Doenca_coronaria_cardiaca, Atividade_Fisica_nos_ultimos_30_dias, 
                       Consumo_Frutas, Consumo_Vegetais, Alto_Consumo_Alcool, 
@@ -148,10 +113,6 @@ def previsao_diabetes(Pressao_Alta, Colesterol_Alto, Checagem_Colesterol_em_5_an
                       Saude_mental, Saude_fisica, Dificuldade_andar_ou_subir_escadas, Sexo, 
                       Idade, Nivel_Educacional, Renda])
 
-    # preds = rf.predict(new_X.reshape(1, -1) )[0]
-    import joblib
-
-    #url = '/Users/valencar/Dropbox/AULAS-UEPB-2022/web_app/'
     file = 'modelo_XGB'
     xgb = joblib.load(file)
     preds = xgb.predict(new_X.reshape(1, -1) )[0]
@@ -177,8 +138,6 @@ def previsao_diabetes(Pressao_Alta, Colesterol_Alto, Checagem_Colesterol_em_5_an
 
     return Diagnostico_Diabetes, image
 
-from PIL import Image
-
 
 if predict_button:
     Diagnostico_Diabetes, imagem  = previsao_diabetes(Pressao_Alta, Colesterol_Alto, 
@@ -198,5 +157,4 @@ if predict_button:
 
 else:
     Diagnostico_Diabetes = 'Sem Previsão' 
-
 
