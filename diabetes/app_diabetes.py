@@ -5,6 +5,17 @@ import numpy as np
 from PIL import Image
 import sklearn 
 
+# Executa no computador local
+url_local = ''
+
+# Executa na nuvem
+url_nuvem = 'diabetes/' 
+
+arquivo = 'modelo_rf.pkl'
+
+url = url_local
+
+
 # git lfs migrate import --include="*.pck"
 # pipreqs
 
@@ -117,15 +128,7 @@ def previsao_diabetes(Pressao_Alta, Colesterol_Alto, Checagem_Colesterol_em_5_an
                       Idade, Nivel_Educacional, Renda])
 
 
-    # Executa no computador local
-    url_local = ''
 
-    # Executa na nuvem
-    url_nuvem = 'diabetes/' 
-
-    arquivo = 'modelo_rf.pkl'
-
-    url = url_local
 
     rf = pickle.load(open(url + arquivo, 'rb')) 
 
