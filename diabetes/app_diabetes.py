@@ -6,8 +6,6 @@ from PIL import Image
 import sklearn 
 
 # git lfs migrate import --include="*.pck"
-
-
 # pipreqs
 
 st.title('Sistema para Previsão de Diabetes')
@@ -118,13 +116,16 @@ def previsao_diabetes(Pressao_Alta, Colesterol_Alto, Checagem_Colesterol_em_5_an
                       Saude_mental, Saude_fisica, Dificuldade_andar_ou_subir_escadas, Sexo, 
                       Idade, Nivel_Educacional, Renda])
 
-    #file = "modelo_rf.pkl" 
-    #xgb = joblib.load(file)
 
-    rf = pickle.load(open('diabetes/modelo_rf.pkl', 'rb')) 
+    # Executa no computador local
+    url_local = 'modelo_rf.pkl'
 
-    # with open('modelo_rf.pkl', 'rb') as f:
-    #     rf = cPickle.load(f)
+    # Executa na nuvem
+    url_nuvem = 'diabetes/modelo_rf.pkl'
+
+    url = url_local
+
+    rf = pickle.load(open(url, 'rb')) 
 
     preds = rf.predict(new_X.reshape(1, -1) )[0]
     #preds
