@@ -4,6 +4,8 @@ import pandas as pd
 import numpy as np
 from PIL import Image
 
+# git lfs migrate import --include="*.pck"
+
 
 # pipreqs
 
@@ -119,7 +121,7 @@ def previsao_diabetes(Pressao_Alta, Colesterol_Alto, Checagem_Colesterol_em_5_an
     #xgb = joblib.load(file)
 
 
-    with open('modelo_rf.pck', 'rb') as f:
+    with open('modelo_rf.pkl', 'rb') as f:
         rf = cPickle.load(f)
 
     preds = rf.predict(new_X.reshape(1, -1) )[0]
