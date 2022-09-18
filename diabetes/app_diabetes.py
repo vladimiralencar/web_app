@@ -120,7 +120,7 @@ def previsao_diabetes(Pressao_Alta, Colesterol_Alto, Checagem_Colesterol_em_5_an
     #file = "modelo_rf.pkl" 
     #xgb = joblib.load(file)
 
-    rf = pickle.load(open('modelo_rf.pkl', 'rb')) 
+    rf = pickle.load(open('diabetes/modelo_rf.pkl', 'rb')) 
 
     # with open('modelo_rf.pkl', 'rb') as f:
     #     rf = cPickle.load(f)
