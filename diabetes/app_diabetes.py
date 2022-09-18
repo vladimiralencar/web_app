@@ -161,7 +161,7 @@ if predict_button:
     
 
     #st.write(Diagnostico_Diabetes)
-    image = Image.open(imagem)
+    image = Image.open('diabetes/' + imagem)
     st.markdown('## Diagnóstico: ' + '__' + Diagnostico_Diabetes + '__')
     #st.write('Diagnóstico:' + Diagnostico_Diabetes)
     st.image(image, width=250)
