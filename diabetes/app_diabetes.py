@@ -1,9 +1,9 @@
-import joblib
+import pickle as cPickle
 import streamlit as st
 import pandas as pd
 import numpy as np
 from PIL import Image
-import xgboost as xgb
+
 
 # pipreqs
 
@@ -115,9 +115,14 @@ def previsao_diabetes(Pressao_Alta, Colesterol_Alto, Checagem_Colesterol_em_5_an
                       Saude_mental, Saude_fisica, Dificuldade_andar_ou_subir_escadas, Sexo, 
                       Idade, Nivel_Educacional, Renda])
 
-    file = "modelo_XGB.pkl" 
-    xgb = joblib.load(file)
-    preds = xgb.predict(new_X.reshape(1, -1) )[0]
+    #file = "modelo_rf.pkl" 
+    #xgb = joblib.load(file)
+
+
+    with open('modelo_rf.pck', 'rb') as f:
+        rf = cPickle.load(f)
+
+    preds = rf.predict(new_X.reshape(1, -1) )[0]
     #preds
 
     # st.write(Pressao_Alta, Colesterol_Alto, Checagem_Colesterol_em_5_anos, IMC, Fumante, AVC, 
