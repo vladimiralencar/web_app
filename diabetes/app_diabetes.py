@@ -13,10 +13,10 @@ url_nuvem = 'diabetes/'
 
 arquivo = 'modelo_rf.pkl'
 
-url = url_local
+url = url_nuvem
 
 
-# git lfs migrate import --include="*.pck"
+# git lfs migrate import --include="*.pkl"
 # pipreqs
 
 st.title('Sistema para Previsão de Diabetes')
